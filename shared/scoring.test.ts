@@ -13,8 +13,14 @@ describe("question bank and scoring", () => {
   it("normalizes accepted text and units", () => {
     const l7 = SCORED_QUESTIONS.find((question) => question.id === "l7-05")!;
     const l8 = SCORED_QUESTIONS.find((question) => question.id === "l8-12")!;
-    expect(isAnswerCorrect(l7, "128 KB")).toBe(true);
+    expect(isAnswerCorrect(l7, "256 KB")).toBe(true);
     expect(isAnswerCorrect(l8, "cpu")).toBe(true);
+  });
+
+  it("uses the Intel Core i7-12700K CPU-Z answer set", () => {
+    const intelAnswers = SCORED_QUESTIONS.filter((question) => question.level === 7)
+      .map((question) => question.correctAnswer);
+    expect(intelAnswers).toEqual(["8", "4", "20", "3", "256", "10", "25"]);
   });
 
   it("scores a complete answer set on the server key", () => {

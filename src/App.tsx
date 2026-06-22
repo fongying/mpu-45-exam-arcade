@@ -134,7 +134,7 @@ function WelcomeScreen({ existing, onStart, onContinue }: {
         </div>
 
         <div className="hero-chip" aria-hidden="true">
-          <div className="hero-chip__core"><Cpu size={56} strokeWidth={1.3} /><span>HX<br />370</span></div>
+          <div className="hero-chip__core"><Cpu size={56} strokeWidth={1.3} /><span>i7<br />12700K</span></div>
           {Array.from({ length: 14 }).map((_, index) => <i key={index} />)}
         </div>
       </section>

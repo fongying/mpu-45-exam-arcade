@@ -296,7 +296,7 @@ function CpuInspector({ questions, drafts, records, checked, onAnswer }: {
           </button>
         </div>
         <div className={`cpu-image-frame ${zoomed ? "is-zoomed" : ""}`}>
-          <img src="/cpu-z-ryzen-ai-9-hx-370.png" alt="AMD Ryzen AI 9 HX 370 的 CPU-Z 資訊截圖" />
+          <img src="/cpu-z-intel-core-i7-12700k.png" alt="Intel Core i7-12700K 的 CPU-Z 資訊截圖" />
         </div>
       </section>
       <section className="cpu-readout" aria-label="CPU-Z 數值輸入">
