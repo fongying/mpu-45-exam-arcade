@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.netlify/
+coverage/
+*.log
+*.tsbuildinfo
+.agents/
+.codex/
+outputs/
+work/
