@@ -1,5 +1,5 @@
 import { getStore } from "@netlify/blobs";
-import { aggregateLeaderboard, type ScoreRecord } from "./_lib";
+import { aggregateLeaderboard, type ScoreRecord } from "../shared/leaderboard";
 
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), {
   status,

@@ -1,5 +1,5 @@
 import { getStore } from "@netlify/blobs";
-import { validateSubmission } from "./_lib";
+import { validateSubmission } from "../shared/leaderboard";
 
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), {
   status,

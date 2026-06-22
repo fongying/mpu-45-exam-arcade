@@ -1,6 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { SCORED_QUESTIONS } from "../../shared/questions";
-import { aggregateLeaderboard, sanitizeNickname, validateSubmission, type ScoreRecord } from "./_lib";
+import { SCORED_QUESTIONS } from "../shared/questions";
+import {
+  aggregateLeaderboard,
+  sanitizeNickname,
+  validateSubmission,
+  type ScoreRecord,
+} from "../netlify/shared/leaderboard";
 
 const baseRecord = (overrides: Partial<ScoreRecord>): ScoreRecord => ({
   playerId: "player-0001",
