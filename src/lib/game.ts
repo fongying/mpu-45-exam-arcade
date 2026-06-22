@@ -20,6 +20,7 @@ export interface GameSession {
   nickname: string;
   currentLevel: number;
   completedLevels: number[];
+  levelClearedAt: Record<string, string>;
   answers: Record<string, AnswerRecord>;
   guidedResponses: Record<string, string>;
   startedAt: string;
@@ -39,6 +40,7 @@ export const createSession = (nickname: string, playerId = makeId()): GameSessio
   nickname: nickname.trim(),
   currentLevel: 1,
   completedLevels: [],
+  levelClearedAt: {},
   answers: {},
   guidedResponses: {},
   startedAt: new Date().toISOString(),
@@ -50,7 +52,7 @@ export const loadSession = (): GameSession | null => {
     if (!raw) return null;
     const parsed = JSON.parse(raw) as GameSession;
     if (parsed.version !== SESSION_VERSION || !parsed.playerId || !parsed.attemptId) return null;
-    return parsed;
+    return { ...parsed, levelClearedAt: parsed.levelClearedAt ?? {} };
   } catch {
     return null;
   }
@@ -95,9 +97,12 @@ export const submitLevelAnswers = (
     ? [...new Set([...session.completedLevels, level])].sort((a, b) => a - b)
     : session.completedLevels;
   const completedAt = passed && level === 8 ? session.completedAt ?? new Date().toISOString() : session.completedAt;
+  const levelClearedAt = passed && !session.levelClearedAt?.[level]
+    ? { ...(session.levelClearedAt ?? {}), [level]: completedAt ?? new Date().toISOString() }
+    : session.levelClearedAt ?? {};
 
   return {
-    session: { ...session, answers, completedLevels, completedAt },
+    session: { ...session, answers, completedLevels, levelClearedAt, completedAt },
     passed,
     missing: [] as string[],
   };

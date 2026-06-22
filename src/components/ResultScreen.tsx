@@ -118,6 +118,7 @@ export function ResultScreen({ session, onRestart, onSubmitted }: ResultScreenPr
             attemptId: session.attemptId,
             nickname: session.nickname,
             completedAt: session.completedAt,
+            levelClearedAt: session.levelClearedAt,
             answers,
           }),
         });

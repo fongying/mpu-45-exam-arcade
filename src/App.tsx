@@ -27,6 +27,7 @@ import {
 } from "lucide-react";
 import { GUIDED_RESPONSES, LEVEL_CODES, LEVEL_TITLES, SCORED_QUESTIONS, questionsForLevel } from "../shared/questions";
 import { ResultScreen } from "./components/ResultScreen";
+import { Scoreboard } from "./components/Scoreboard";
 import { StageWidgets } from "./components/StageWidgets";
 import {
   SESSION_KEY,
@@ -84,7 +85,10 @@ function WelcomeScreen({ existing, onStart, onContinue }: {
     <main className="welcome-screen">
       <nav className="welcome-nav">
         <BrandMark />
-        <div className="system-status"><span /><b>SYSTEM READY</b><small>{SCORED_QUESTIONS.length} CHECKPOINTS</small></div>
+        <div className="welcome-nav__actions">
+          <a className="scoreboard-link" href="/scoreboard"><Trophy size={16} /> 即時記分板</a>
+          <div className="system-status"><span /><b>SYSTEM READY</b><small>{SCORED_QUESTIONS.length} CHECKPOINTS</small></div>
+        </div>
       </nav>
 
       <section className="welcome-hero">
@@ -341,6 +345,8 @@ function GameScreen({ session, onChange, onAbandon }: {
 }
 
 export default function App() {
+  if (window.location.pathname.replace(/\/$/, "") === "/scoreboard") return <Scoreboard />;
+
   const [session, setSession] = useState<GameSession | null>(() => loadSession());
   const [view, setView] = useState<"welcome" | "game" | "result">(() => {
     const saved = loadSession();
@@ -358,6 +364,21 @@ export default function App() {
   };
 
   const changeSession = (next: GameSession) => {
+    if ((next.completedLevels.length > (session?.completedLevels.length ?? 0))) {
+      const answers = Object.entries(next.answers).map(([questionId, record]) => ({ questionId, firstAnswer: record.firstAnswer }));
+      void fetch("/.netlify/functions/submit-progress", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          playerId: next.playerId,
+          attemptId: next.attemptId,
+          nickname: next.nickname,
+          completedLevels: next.completedLevels,
+          levelClearedAt: next.levelClearedAt,
+          answers,
+        }),
+      }).catch(() => undefined);
+    }
     setSession(next);
     if (next.completedAt) setView("result");
   };
